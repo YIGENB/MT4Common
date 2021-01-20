@@ -722,6 +722,131 @@ void iMoveStopLoss(int myStopLoss)
   }
 }
 
+//+------------------------------------------------------------------+
+//| 获取当前的账户盈亏金额                    |
+//+------------------------------------------------------------------+
+double getProfitBuyType(int myMagicNum) {
+   double returnValue = 0;
+   for(int i =0; i< OrdersTotal(); i++){
+      OrderSelect(i, SELECT_BY_POS, MODE_TRADES);
+      if(OrderSymbol()== Symbol() && OrderMagicNumber() == myMagicNum)
+      {
+        returnValue = returnValue + OrderProfit() + OrderSwap()+ OrderCommission();
+      }
+      else{
+         continue;
+      }
+   }
+   return returnValue;
+}
+
+//+------------------------------------------------------------------+
+//| 获取最新订单的类型                                   |
+//+------------------------------------------------------------------+
+double FindLastBuyType(int myMagicNum) 
+{
+  double l_ord_open_price_0;
+  int l_ticket_8;
+  double ld_unused_12 = 0;
+  int l_ticket_20 = 0;
+  for (int l_pos_24 = OrdersTotal() - 1; l_pos_24 >= 0; l_pos_24--) 
+  {
+    OrderSelect(l_pos_24, SELECT_BY_POS, MODE_TRADES);
+    if (OrderSymbol() != Symbol() || OrderMagicNumber() != myMagicNum) continue;
+    if (OrderSymbol() == Symbol() && OrderMagicNumber() == myMagicNum) 
+    {
+      l_ticket_8 = OrderTicket();
+      if (l_ticket_8 > l_ticket_20) 
+      {
+        l_ord_open_price_0 = OrderType();
+        ld_unused_12 = l_ord_open_price_0;
+        l_ticket_20 = l_ticket_8;
+      }
+    }
+  }
+  return (l_ord_open_price_0);
+}
+
+//+------------------------------------------------------------------+
+//| 获取最新订单的价格                                   |
+//+------------------------------------------------------------------+
+double FindLastBuyPrice(int myMagicNum) 
+{
+  double l_ord_open_price_0;
+  int l_ticket_8;
+  double ld_unused_12 = 0;
+  int l_ticket_20 = 0;
+  for (int l_pos_24 = OrdersTotal() - 1; l_pos_24 >= 0; l_pos_24--) 
+  {
+    OrderSelect(l_pos_24, SELECT_BY_POS, MODE_TRADES);
+    if (OrderSymbol() != Symbol() || OrderMagicNumber() != myMagicNum) continue;
+    if (OrderSymbol() == Symbol() && OrderMagicNumber() == myMagicNum) 
+    {
+      l_ticket_8 = OrderTicket();
+      if (l_ticket_8 > l_ticket_20) 
+      {
+        l_ord_open_price_0 = OrderOpenPrice();
+        ld_unused_12 = l_ord_open_price_0;
+        l_ticket_20 = l_ticket_8;
+      }
+    }
+  }
+  return (l_ord_open_price_0);
+}
+
+//+------------------------------------------------------------------+
+//| 获取最新订单的手数                                   |
+//+------------------------------------------------------------------+
+double FindLastBuyLots(int myMagicNum) 
+{
+  double l_ord_open_price_0;
+  int l_ticket_8;
+  double ld_unused_12 = 0;
+  int l_ticket_20 = 0;
+  for (int l_pos_24 = OrdersTotal() - 1; l_pos_24 >= 0; l_pos_24--) 
+  {
+    OrderSelect(l_pos_24, SELECT_BY_POS, MODE_TRADES);
+    if (OrderSymbol() != Symbol() || OrderMagicNumber() != myMagicNum) continue;
+    if (OrderSymbol() == Symbol() && OrderMagicNumber() == myMagicNum) 
+    {
+      l_ticket_8 = OrderTicket();
+      if (l_ticket_8 > l_ticket_20) 
+      {
+        l_ord_open_price_0 = OrderLots();
+        ld_unused_12 = l_ord_open_price_0;
+        l_ticket_20 = l_ticket_8;
+      }
+    }
+  }
+  return (l_ord_open_price_0);
+}
+
+//+------------------------------------------------------------------+
+//| 获取总数                                       |
+//+------------------------------------------------------------------+
+int GetOrderCount(int myMagicNum)
+{
+    int cnt, total;
+    int rest=0;
+    total=OrdersTotal();
+    if(total<=0)
+    {
+      return rest;
+    }
+    for(cnt=total-1;cnt>=0;cnt--)
+     {
+         if(OrderSelect(cnt, SELECT_BY_POS, MODE_TRADES)==true)
+         {
+            if(OrderMagicNumber() == myMagicNum&&OrderSymbol() == Symbol())
+            {
+                rest++;
+            }
+         }
+     }  
+  return rest;
+}
+
+
 //+------------------------------------------------------------------+物件+------------------------------------------------------------------+
 //+------------------------------------------------------------------+
 //| 在屏幕上显示文字标签                    |
@@ -899,6 +1024,44 @@ void Draw_Mark(int myTicket)
     ObjectSet(myObjectName,OBJPROP_COLOR,arrowColor);
   }
 }
+
+void ObjectCreat0(string A_name_0, string A_text_8, double A_x_16, double A_y_24, color A_color_32) {
+   if (ObjectFind(A_name_0) >= 0) {
+      ObjectSetText(A_name_0, A_text_8, 14, "微软雅黑", A_color_32);
+      return;
+   }
+   ObjectCreate(A_name_0, OBJ_LABEL, 0, 0, 0);
+   ObjectSet(A_name_0, OBJPROP_XDISTANCE, A_x_16);
+   ObjectSet(A_name_0, OBJPROP_YDISTANCE, A_y_24);
+   ObjectSet(A_name_0, OBJPROP_COLOR, A_color_32);
+   ObjectSetText(A_name_0, A_text_8, 14, "微软雅黑", A_color_32);
+}
+
+void ButtonCreate(string Name,string txt1,string txt2,int XX,int YX,int XL,int YL,int WZ,color clr,color back_clr,color border_clr,bool ZHClr) {
+if(ObjectFind(0,Name)==-1) {
+  ObjectCreate(0,Name,OBJ_BUTTON,0,0,0);
+  ObjectSetInteger(0,Name,OBJPROP_XDISTANCE,XX);
+  ObjectSetInteger(0,Name,OBJPROP_YDISTANCE,YX);
+  ObjectSetInteger(0,Name,OBJPROP_XSIZE,XL);
+  ObjectSetInteger(0,Name,OBJPROP_YSIZE,YL);
+  ObjectSetInteger(0,Name,OBJPROP_CORNER,WZ);
+  ObjectSetString(0,Name,OBJPROP_FONT,"微软雅黑");
+  ObjectSetInteger(0,Name,OBJPROP_FONTSIZE,13);
+  ObjectSetInteger(0,Name,OBJPROP_BORDER_COLOR,border_clr);
+  }
+if(ObjectGetInteger(0,Name,OBJPROP_STATE)==1) {
+  if(ZHClr) {
+    ObjectSetInteger(0,Name,OBJPROP_COLOR,back_clr);
+    ObjectSetInteger(0,Name,OBJPROP_BGCOLOR,clr);
+    }
+  ObjectSetString(0,Name,OBJPROP_TEXT,txt2);
+  }
+else {
+  ObjectSetInteger(0,Name,OBJPROP_COLOR,clr);
+  ObjectSetInteger(0,Name,OBJPROP_BGCOLOR,back_clr);
+  ObjectSetString(0,Name,OBJPROP_TEXT,txt1);
+  }
+}
 //+------------------------------------------------------------------+物件+------------------------------------------------------------------+
 
 //+------------------------------------------------------------------+时间+------------------------------------------------------------------+
@@ -994,4 +1157,36 @@ string iCrossSignal(double myFast0,double mySlow0,double myFast1,double mySlow1)
 //   }
 // }
 
+//计算均线两个点的角度
+//三角函数和直角坐标系坐标转换，某两个点Y坐标差值 (price1-price2) 对应的X坐标差值((shift2-shift1),
+//二者换算,除即是正切，再反函数就是弧度，在转换为角度。即可得到这两个点连线的角度。
+//startShift:左边均线位置,一般是6
+//endShift:右边均线位置,一般是0
+//startPrice:左边均线位置对应价格
+//endPrice:右边均线位置对应价格
+//type://0-弧度；1-角度  
+
+double getAngle(int startShift,int endShift,double startPrice,double endPrice,int type=1)
+{
+
+   //Print(startShift+" "+endShift+" "+startPrice+" "+endPrice+" "+type);
+  
+   double angle, scale, rad;
+   int xShiftDiff;
+   double yPriceDiff;
+   double pi=3.14159;
+   rad=180.0/pi;
+  
+  xShiftDiff=startShift-endShift;
+  yPriceDiff=(endPrice/Point) - (startPrice/Point);
+
+   //Print(yPriceDiff);
+  angle=yPriceDiff/xShiftDiff;
+  
+  
+   if(type==1) angle = MathArctan(angle)*rad;
+  
+   return (angle);
+
+}
 //+------------------------------------------------------------------+其他+------------------------------------------------------------------+
