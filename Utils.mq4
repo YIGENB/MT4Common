@@ -585,41 +585,41 @@ double iFundsToHands(string mySymbol,double myFunds)
 }
 
 
-// int iBarCode(int myBarShift)
-// {
-//   int result=0;
-//   double myOpen,myHigh,myLow,myClose;//开高低收
-//   myOpen=iOpen(NULL,0,myBarShift);
-//   myHigh=iHigh(NULL,0,myBarShift);
-//   myLow=iLow(NULL,0,myBarShift);
-//   myClose=iClose(NULL,0,myBarShift);
-//   if(myOpen<myClose&&myOpen==myLow&&myClose==myHigh)
-//      result=1;//光头光脚阳线
-//   else if(myOpen>myClose&&myOpen==myHigh&&myClose==myLow)
-//      result=-1;//光头光脚阴线
-//   else if(myOpenmyLow&&myClose==myHigh)
-//      result=2;//下引线阳线
-//   else if(myOpen>myClose&&myOpen==myHigh&&myClose>myLow)
-//      result=-2;//下引线阴线
-//   else if(myOpen)
-//      result=3;//上引线阳线
-//   else if(myOpen>myClose&&myOpen)
-//      result=-3;//上引线阴线
-//   else if(myOpenmyLow&&myClose)
-//      result=4;//上下引线阳线
-//   else if(myOpen>myClose&&myOpenmyLow)
-//      result=-4;//上下引线阴线
-//   else if(myOpen==myClose&&myOpen==myLow&&myClose)
-//      result=5;//倒T字型
-//   else if(myOpen==myClose&&myOpen==myHigh&&myClose)
-//      result=-5;//T字型
-//   else if(myOpen==myClose&&myOpen>myLow&&myClose)
-//      result=6;//十字型
-//   else if(myOpen==myClose&&myOpen==myHigh&&myClose==myLow)
-//      result=-6;//一字型
+int iBarCode(int myBarShift)
+{
+  int result=0;
+  double myOpen,myHigh,myLow,myClose;//开高低收
+  myOpen=iOpen(NULL,0,myBarShift);
+  myHigh=iHigh(NULL,0,myBarShift);
+  myLow=iLow(NULL,0,myBarShift);
+  myClose=iClose(NULL,0,myBarShift);
+  if(myOpen<myClose&&myOpen==myLow&&myClose==myHigh)
+     result=1;//光头光脚阳线
+  else if(myOpen>myClose&&myOpen==myHigh&&myClose==myLow)
+     result=-1;//光头光脚阴线
+  else if(myOpenmyLow&&myClose==myHigh)
+     result=2;//下引线阳线
+  else if(myOpen>myClose&&myOpen==myHigh&&myClose>myLow)
+     result=-2;//下引线阴线
+  else if(myOpen<myClose&&myOpen==myLow&&myClose<myHigh)
+     result=3;//上引线阳线
+  else if(myOpen>myClose&&myOpen<myHigh&&myClose==myLow)
+     result=-3;//上引线阴线
+  else if(myOpen<myClose&&myOpen>myLow&&myClose<myHigh)
+     result=4;//上下引线阳线
+  else if(myOpen>myClose&&myOpen<myHigh&&myClose>myLow)
+     result=-4;//上下引线阴线
+  else if(myOpen==myClose&&myOpen==myLow&&myClose<myHigh)
+     result=5;//倒T字型
+  else if(myOpen==myClose&&myOpen==myHigh&&myClose>myLow)
+     result=-5;//T字型
+  else if(myOpen==myClose&&myOpen>myLow&&myClose<myHigh)
+     result=6;//十字型
+  else if(myOpen==myClose&&myOpen==myHigh&&myClose==myLow)
+     result=-6;//一字型
 
-//   return(result);
-// }
+  return(result);
+}
 
 //+------------------------------------------------------------------+
 //| 使用本函数 最好不要设置止盈止损功能                   |
