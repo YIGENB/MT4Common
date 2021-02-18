@@ -597,7 +597,7 @@ int iBarCode(int myBarShift)
      result=1;//光头光脚阳线
   else if(myOpen>myClose&&myOpen==myHigh&&myClose==myLow)
      result=-1;//光头光脚阴线
-  else if(myOpenmyLow&&myClose==myHigh)
+  else if(myOpen<myClose&&myOpen>myLow&&myClose==myHigh)
      result=2;//下引线阳线
   else if(myOpen>myClose&&myOpen==myHigh&&myClose>myLow)
      result=-2;//下引线阴线
@@ -620,7 +620,6 @@ int iBarCode(int myBarShift)
 
   return(result);
 }
-
 //+------------------------------------------------------------------+
 //| 使用本函数 最好不要设置止盈止损功能                   |
 //+------------------------------------------------------------------+
